@@ -1,0 +1,27 @@
+live_config_reload = true
+
+import = [
+  "~/.config/alacritty/catppuccin-latte.toml"
+  #"~/.config/alacritty/catppuccin-frappe.toml"
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  # "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[window]
+opacity = 0.85
+padding = { x = 0, y = 0 }
+decorations = "full"
+
+[font]
+normal = { family = "MartianMono Nerd Font Mono", style = "Bold" }
+size = 12
+
+[cursor]
+style = "Underline"
+unfocused_hollow = false
+
+[selection]
+save_to_clipboard = true
+
+[env]
+TERM = "xterm-256color"
