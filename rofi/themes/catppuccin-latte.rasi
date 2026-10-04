@@ -1,0 +1,153 @@
+/* Catppuccin Latte — Rofi theme */
+
+* {
+    bg0:        #eff1f5d9;   /* 85% — picom blurs behind it */
+    bg1:        #e6e9efcc;
+    bg2:        #ccd0da;
+    fg0:        #4c4f69;
+    on-accent:  #eff1f5;
+    fg1:        #5c5f77;
+    fg2:        #6c6f85;
+    accent:     #1e66f5;
+    urgent:     #d20f39;
+    selected:   #1e66f5;
+    border:     #7287fd;
+
+    background-color: transparent;
+    text-color:       @fg0;
+    font:             "MartianMono Nerd Font Mono Bold 11";
+}
+
+window {
+    background-color: @bg0;
+    border:           2px;
+    border-color:     @border;
+    border-radius:    12px;   /* = picom corner-radius */
+    width:            640px;
+    padding:          0;
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [ inputbar, message, listview, mode-switcher ];
+    spacing:          0;
+    padding:          8px;
+}
+
+inputbar {
+    background-color: @bg1;
+    border-radius:    8px;
+    children:         [ prompt, entry ];
+    padding:          10px 14px;
+    margin:           0 0 8px 0;
+    spacing:          8px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @accent;
+}
+
+entry {
+    background-color: transparent;
+    text-color:       @fg0;
+    placeholder:      "Search…";
+    placeholder-color: @fg2;
+    cursor:           text;
+}
+
+listview {
+    background-color: transparent;
+    columns:          1;
+    lines:            8;
+    fixed-height:     true;
+    scrollbar:        false;
+    spacing:          2px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    6px;
+    children:         [ element-icon, element-text ];
+    padding:          8px 10px;
+    spacing:          10px;
+    orientation:      horizontal;
+}
+
+element.normal.normal {
+    background-color: transparent;
+    text-color:       @fg0;
+}
+
+element.normal.urgent {
+    background-color: @urgent;
+    text-color:       @on-accent;
+}
+
+element.selected.normal {
+    background-color: @accent;
+    text-color:       @on-accent;
+}
+
+element.selected.urgent {
+    background-color: @urgent;
+    text-color:       @on-accent;
+}
+
+element.alternate.normal {
+    background-color: transparent;
+    text-color:       @fg0;
+}
+
+element-icon {
+    background-color: transparent;
+    size:             24px;
+    vertical-align:   0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+    highlight:        bold #1e66f5;
+}
+
+mode-switcher {
+    background-color: @bg1;
+    border-radius:    8px;
+    padding:          6px;
+    margin:           8px 0 0 0;
+    spacing:          4px;
+}
+
+button {
+    background-color: transparent;
+    border-radius:    6px;
+    padding:          4px 10px;
+    text-color:       @fg1;
+    cursor:           pointer;
+}
+
+button.selected {
+    background-color: @accent;
+    text-color:       @on-accent;
+}
+
+message {
+    background-color: @bg1;
+    border-radius:    8px;
+    margin:           0 0 8px 0;
+    padding:          8px 14px;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @fg0;
+}
+
+scrollbar {
+    background-color: @bg1;
+    handle-color:     @accent;
+    border-radius:    4px;
+    width:            4px;
+}
