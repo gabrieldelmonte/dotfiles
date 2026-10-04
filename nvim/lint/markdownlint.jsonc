@@ -1,0 +1,22 @@
+// Fallback markdownlint rules for projects without their own config.
+// Tuned for MDX and Docusaurus content.
+{
+  "config": {
+    // Long prose lines are normal in docs sources
+    "MD013": false,
+    // MDX pages mix closed ATX (`# Title #`) with plain ATX subheadings
+    "MD003": false,
+    // MDX embeds JSX components
+    "MD033": false,
+    // Frontmatter and imports come before the first heading
+    "MD041": false,
+    // Shell prompts such as `$` are a documentation convention here
+    "MD014": false,
+    // Existing pages use extra blank lines around components
+    "MD012": false,
+    // Still enforce one H1 per page, without counting the frontmatter title
+    "MD025": { "front_matter_title": "" },
+    // Still require a language on every fenced code block
+    "MD040": true
+  }
+}
