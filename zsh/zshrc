@@ -1,0 +1,32 @@
+# zshrc — portable part of the bspwm rice (oh-my-zsh + tmux auto-attach).
+# Machine-specific aliases and PATHs go in ~/.zshrc.local, which is sourced last.
+
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="essembeh"
+ENABLE_CORRECTION="true"
+
+plugins=(
+	git
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+export VISUAL=nvim
+export PATH=~/bin:~/.local/bin:$PATH
+
+alias adog='git log --all --oneline --graph --decorate'
+alias hclear='history -c'
+alias vim='nvim'
+
+# Attach to (or create) the "main" tmux session in every new terminal.
+if command -v tmux >/dev/null 2>&1; then
+  if [ -z "$TMUX" ]; then
+    tmux attach -t main || tmux new -s main
+  fi
+fi
+
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
