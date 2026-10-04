@@ -18,6 +18,7 @@ G = {k: chr(v) for k, v in {
     "lcap": 0xE0B6, "rcap": 0xE0B4,
     # clock: Font Awesome, like the chip icons
     "clock": 0xF017, "kbd": 0xF030C, "power": 0xF0425,
+    "max": 0xF0293,  # fullscreen-ish arrows, for monocle
     "vol0": 0xF057F, "vol1": 0xF0580, "vol2": 0xF057E, "mute": 0xF075F,
     "bri0": 0xF00DE, "bri1": 0xF00DF, "bri2": 0xF00E0,
     "bat0": 0xF007A, "bat1": 0xF007C, "bat2": 0xF007E, "bat3": 0xF0080,
@@ -160,10 +161,13 @@ label-focused  = "{ws('${colors.blue}')}"
 label-occupied = "{ws('${colors.subtext0}')}"
 label-urgent   = "{ws('${colors.red}')}"
 label-empty    =
+; Shown while the desktop is maximized (monocle, Super+M / Super+Z).
+label-monocle = "{icon('${colors.lavender}', G['max']).strip()}"
+label-tiled =
 label-focused-padding  = 1
 label-occupied-padding = 1
 label-urgent-padding   = 1
-format = <label-state>
+format = <label-state><label-mode>
 format-background = {PILL}
 
 ; ============================================================
