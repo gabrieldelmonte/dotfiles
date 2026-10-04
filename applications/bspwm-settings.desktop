@@ -1,0 +1,13 @@
+[Desktop Entry]
+# GNOME Settings under bspwm. The stock entry says OnlyShowIn=GNOME (so rofi
+# hides it), and the app shows its full panel list only on GNOME.
+# Works here: Wi-Fi, Network, Bluetooth, Sound, Printers, Users, Date & Time,
+# Online Accounts, Apps, About. Not applied without GNOME's daemons: Displays
+# (use arandr), Mouse & Touchpad / Keyboard (bspwmrc), Power, Appearance.
+Type=Application
+Name=Settings
+Comment=GNOME Settings (Wi-Fi, Bluetooth, Sound, Printers, Users…)
+Exec=env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
+Icon=org.gnome.Settings
+Categories=Settings;
+Keywords=settings;preferences;wifi;bluetooth;sound;printer;
