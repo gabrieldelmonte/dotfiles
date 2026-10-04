@@ -1,0 +1,13 @@
+# Private, per-machine shell settings (aliases, work paths) — never committed
+zsh/zshrc.local
+.zshrc.local
+
+# Backups made by setup.sh, Tweaks or editors
+*.bak
+*.bak-*
+*.tweaks-*
+*~
+*.swp
+
+# Python bytecode from scripts/
+__pycache__/
