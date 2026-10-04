@@ -38,8 +38,8 @@ desktop and tmux binding. The essentials:
 | Alt + Tab | Switch window |
 | Super + Shift + I | Screen layout (arandr) |
 | 3-finger swipe | Switch desktops (up: window list) |
-| Super + 1…0 | Desktops |
-| Super + Shift + 1…0 | Send window to a desktop |
+| Super + 1…9, 0 | Desktops 1–10 |
+| Super + Shift + 1…9, 0 | Move window to desktop 1–10 |
 | Super + M / Super + Z | Maximize / restore (keeps gaps and rounded corners) |
 | Super + F | Toggle fullscreen |
 | Super + Shift + X | Lock screen |
