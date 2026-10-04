@@ -194,13 +194,13 @@ super + ctrl + space
 
 ## Desktops
 
-# Go to desktop 0–9 (the key is the desktop's name: Super+3 → desktop 3)
-super + {0-9}
-    bspc desktop -f '{0-9}'
+# Go to desktop 1–10 (Super+1 → first desktop, Super+0 → desktop 10)
+super + {1-9,0}
+    bspc desktop -f '{1-9,10}'
 
-# Move window to desktop 0–9 (Super+Shift+3 → desktop 3)
-super + shift + {0-9}
-    bspc node -d '{0-9}'
+# Move window to desktop 1–10 (Super+Shift+3 → desktop 3, Super+Shift+0 → 10)
+super + shift + {1-9,0}
+    bspc node -d '{1-9,10}'
 
 # Previous / next desktop
 super + bracket{left,right}
