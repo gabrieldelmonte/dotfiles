@@ -1,0 +1,14 @@
+# Plugin lockfile is intentionally tracked -- it pins every plugin to a known
+# good commit, which is the whole point of committing this directory.
+# lazy-lock.json
+
+# Local, machine-specific overrides
+lua/config/local.lua
+.luarc.json
+*.local
+
+# Editor / OS noise
+*.swp
+*.swo
+.DS_Store
+tags
