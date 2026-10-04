@@ -1,0 +1,8 @@
+[Desktop Entry]
+# Hides the .deb Slack (/usr/share/applications/slack.desktop) from the app
+# launcher so only the snap Slack is listed. The .deb stays installed and
+# /usr/bin/slack still works from a terminal. Delete this file to undo.
+Type=Application
+Name=Slack (deb)
+Exec=/usr/bin/slack %U
+NoDisplay=true
