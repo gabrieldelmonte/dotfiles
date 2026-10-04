@@ -1,0 +1,5 @@
+/* App theme: Yaru (Ubuntu's default), set in settings.ini and gsettings.
+   The Catppuccin Latte colour overrides are kept in gtk-catppuccin.css.
+   To use them again: replace this file's content with
+       @import url("gtk-catppuccin.css");
+   and set the theme back to adw-gtk3 (see setup.sh). */
