@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# saver_video — xsecurelock saver: loops the lock-screen video with mpv and
+# draws the lock-screen UI inside it (ui.lua). auth_card talks to it through an
+# mpv IPC socket, one per saver window (one per monitor).
+here=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+video=$(readlink -f "$here/../wallpapers/lockscreen.mp4")
+sockdir="${XDG_RUNTIME_DIR:-/tmp}/lockscreen"
+mkdir -p -m 700 "$sockdir"
+sock="$sockdir/mpv-${XSCREENSAVER_WINDOW:-0}.sock"
+
+pid=""
+cleanup() { [ -n "$pid" ] && kill "$pid" 2>/dev/null; rm -f "$sock"; exit 0; }
+trap cleanup TERM INT HUP
+
+# Restart mpv if it ever exits (as xsecurelock's own saver_mpv does).
+while true; do
+    mpv --no-config --no-input-terminal --really-quiet --no-stop-screensaver \
+        --no-audio --wid="${XSCREENSAVER_WINDOW}" --loop-file=inf \
+        --panscan=1.0 --hwdec=auto-copy --brightness=-18 --osd-level=0 \
+        --input-ipc-server="$sock" --script="$here/ui.lua" "$video" &
+    pid=$!
+    wait "$pid"
+    sleep 1
+done
