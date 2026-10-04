@@ -40,6 +40,8 @@ PACKAGES=(
     thunar thunar-volman thunar-archive-plugin file-roller gvfs-backends
     # Wallpaper, screenshots, lock screen
     feh flameshot i3lock xss-lock imagemagick ubuntu-wallpapers-noble
+    # Lock screen: video + GNOME-style card (lockscreen/), i3lock as fallback
+    xsecurelock mpv
     # Audio, brightness, network, polkit
     playerctl udiskie
     pulseaudio-utils wireplumber pavucontrol brightnessctl network-manager-gnome policykit-1-gnome blueman
