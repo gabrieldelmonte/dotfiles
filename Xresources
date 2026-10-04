@@ -1,0 +1,11 @@
+Xft.dpi:       96
+Xft.antialias: 1
+Xft.hinting:   1
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+Xft.rgba:      rgb
+
+! Cursor: same theme and size as in GNOME, so bspwm, Alacritty and polybar
+! match GTK apps. (GNOME: cursor-theme / cursor-size in org.gnome.desktop.interface)
+Xcursor.theme: catppuccin-latte-light-cursors
+Xcursor.size:  20
