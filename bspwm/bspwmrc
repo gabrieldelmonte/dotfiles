@@ -28,12 +28,12 @@ dbus-update-activation-environment --systemd DISPLAY XAUTHORITY 2>/dev/null
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 # --- Monitors & desktops ---
-# Create desktops 0-9 once (bspc wm -r keeps them); monitors.sh, run at the
+# Create desktops 1-10 once (bspc wm -r keeps them); monitors.sh, run at the
 # end of this file and on every hotplug, spreads them over the screens.
 bspc config remove_unplugged_monitors true
 bspc config remove_disabled_monitors  true
 bspc config merge_overlapping_monitors true
-bspc query -D --names | grep -qx 0 || bspc monitor -d 0 1 2 3 4 5 6 7 8 9
+bspc query -D --names | grep -qx 10 || bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
 # --- Layout ---
 bspc config split_ratio           0.52
