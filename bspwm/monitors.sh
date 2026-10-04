@@ -50,3 +50,6 @@ if [ -n "$wp" ]; then feh --no-fehbg --bg-fill "$wp"; else xsetroot -solid "#eff
 
 # --- 4. One bar per monitor ---
 "$HOME/.config/polybar/launch.sh"
+
+# --- 5. Lock screen image for this layout (built in the background) ---
+"$HOME/.config/rofi/scripts/lock.sh" --prepare &
