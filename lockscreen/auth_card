@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# auth_card — xsecurelock auth module (the name must start with "auth_").
+# The card is drawn by the lock-screen video (ui.lua); auth_card.py does the
+# work. Whatever goes wrong — no Python, a syntax error, a crash at start-up —
+# xsecurelock's own dialog (auth_x11) takes over, so you can always unlock.
+here=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+fallback=/usr/libexec/xsecurelock/auth_x11
+command -v python3 >/dev/null || exec "$fallback"
+exec python3 -c '
+import os, runpy, sys
+try:
+    runpy.run_path(sys.argv[1], run_name="__main__")
+except SystemExit:
+    raise
+except BaseException as e:
+    print(f"auth_card: {e!r}; falling back to auth_x11", file=sys.stderr, flush=True)
+    os.execv(sys.argv[2], [sys.argv[2]])
+' "$here/auth_card.py" "$fallback"
