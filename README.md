@@ -39,7 +39,10 @@ desktop and tmux binding. The essentials:
 | Super + Shift + I | Screen layout (arandr) |
 | 3-finger swipe | Switch desktops (up: window list) |
 | Super + 1…0 | Desktops |
+| Super + Shift + 1…0 | Send window to a desktop |
+| Super + M / Super + Z | Maximize / restore (keeps gaps and rounded corners) |
 | Super + F | Toggle fullscreen |
+| Super + Shift + X | Lock screen |
 
 ## Layout
 
@@ -53,6 +56,8 @@ desktop and tmux binding. The essentials:
 | `alacritty/` `nvim/` `tmux/` `zsh/` | Terminal stack |
 | `touchegg/` | Touchpad gestures (3 fingers: switch desktops / window list) |
 | `applications/` | Launcher entries (Settings under bspwm, hide duplicate Slack) |
+| `lockscreen/` | Lock screen: xsecurelock saver + auth module (see below) |
+| `wallpapers/` | Lock-screen video (`lockscreen.mp4` links to the file in use) |
 
 ## Bar
 
@@ -60,6 +65,21 @@ Left: desktops and system stats (CPU usage and temperature, GPU, RAM).
 Centre: clock. Right: keyboard layout, volume, brightness, battery, network,
 Bluetooth, tray, power mode, do-not-disturb bell and power menu. Clicking the
 stats opens btop, the network opens nmtui, the gauge opens the power mode menu.
+
+## Lock screen
+
+Built on xsecurelock (which keeps doing the actual locking and password
+checking via PAM), with two replaceable parts in `lockscreen/`:
+
+- `saver_video` plays `wallpapers/lockscreen.mp4` with mpv; `ui.lua` draws a
+  large clock and date on top of it.
+- `auth_card` (+ `auth_card.py`) replaces xsecurelock's grey password box:
+  while you type, the video blurs and a GNOME-style card shows your initial,
+  name and the password as dots. If it ever fails, xsecurelock's own dialog
+  takes over, so you can always unlock.
+
+To use another video, point the link at it:
+`ln -sfn my-video.mp4 wallpapers/lockscreen.mp4`.
 
 ## Private settings
 
