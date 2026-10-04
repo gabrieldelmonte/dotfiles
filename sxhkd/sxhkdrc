@@ -137,8 +137,8 @@ super + f
 super + shift + f
     bspc node -t '~floating'
 
-# Toggle monocle layout (one window fills the desktop)
-super + m
+# Maximize / restore, like tmux prefix+z (monocle: keeps gaps, bar and rounded corners)
+super + {m,z}
     bspc desktop -l next
 
 # Focus window left / down / up / right
