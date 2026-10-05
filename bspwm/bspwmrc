@@ -5,11 +5,9 @@
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 xsetroot -cursor_name left_ptr
 xset r rate 300 50
-# Keyboard layouts from GNOME (br ABNT2 + us). Alt+Shift or a click on the
-# keyboard pill in polybar switches; Super+Space stays the app launcher.
-setxkbmap -layout br,us -option grp:alt_shift_toggle
-# Mouse, touchpad and trackpoint: GNOME's settings (speed, acceleration, tap,
-# natural scrolling), re-applied whenever a device is plugged in or wakes up.
+# Keyboard, mouse, touchpad and trackpoint: GNOME's settings (layouts, keyboard
+# options like Caps Lock, speed, acceleration, tap, natural scrolling), applied
+# live and again whenever a device is plugged in or wakes up.
 pkill -f "bspwm/input.sh --watch"
 "$HOME/.config/bspwm/input.sh" --watch &
 
