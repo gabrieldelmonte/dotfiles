@@ -59,10 +59,21 @@ if command -v xsecurelock >/dev/null && command -v mpv >/dev/null && [ -f "$vide
     export XSECURELOCK_SINGLE_AUTH_WINDOW=1
     export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0   # first key typed is part of the password
     export XSECURELOCK_AUTH_TIMEOUT=30
-    # Never blank while locked: the video keeps playing until you unlock.
-    # (X's own screen saver / DPMS timers are paused below for the same reason.)
-    export XSECURELOCK_BLANK_TIMEOUT=-1
-    keep_screen_on=1
+    # On the charger: never blank — the video keeps playing until you unlock
+    # (X's own screen saver / DPMS timers are paused below for the same reason).
+    # On battery: screen off (and video stopped) after 5 minutes locked.
+    on_ac=0
+    for ps in /sys/class/power_supply/*; do
+        [ "$(cat "$ps/type" 2>/dev/null)" = Mains ] && [ "$(cat "$ps/online" 2>/dev/null)" = 1 ] && on_ac=1
+    done
+    if [ "$on_ac" = 1 ]; then
+        export XSECURELOCK_BLANK_TIMEOUT=-1
+        keep_screen_on=1
+    else
+        export XSECURELOCK_BLANK_TIMEOUT=300
+        export XSECURELOCK_BLANK_DPMS_STATE=off
+        export XSECURELOCK_SAVER_STOP_ON_BLANK=1
+    fi
     # Keys that keep working while locked.
     export XSECURELOCK_KEY_XF86AudioRaiseVolume_COMMAND="wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
     export XSECURELOCK_KEY_XF86AudioLowerVolume_COMMAND="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
