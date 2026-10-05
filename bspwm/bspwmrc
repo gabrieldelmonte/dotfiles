@@ -11,6 +11,11 @@ xset r rate 300 50
 pkill -f "bspwm/input.sh --watch"
 "$HOME/.config/bspwm/input.sh" --watch &
 
+# Theme, icons, cursor and font for all apps (snaps and Electron too), from
+# GNOME's settings — what GNOME's own settings daemon would provide.
+pkill -f "bspwm/xsettings.sh --watch"
+"$HOME/.config/bspwm/xsettings.sh" --watch &
+
 # --- Password keyring ---
 # GDM unlocks gnome-keyring at login, but outside GNOME only its pkcs11 part
 # runs. Start the "secrets" part so Slack, browsers, VS Code and git can store
