@@ -8,13 +8,10 @@ xset r rate 300 50
 # Keyboard layouts from GNOME (br ABNT2 + us). Alt+Shift or a click on the
 # keyboard pill in polybar switches; Super+Space stays the app launcher.
 setxkbmap -layout br,us -option grp:alt_shift_toggle
-_tp=$(xinput list --name-only 2>/dev/null | grep -iE 'touchpad|trackpad' | head -1)
-if [ -n "$_tp" ]; then
-    xinput set-prop "$_tp" "libinput Tapping Enabled" 1 2>/dev/null
-    xinput set-prop "$_tp" "libinput Natural Scrolling Enabled" 1 2>/dev/null
-    xinput set-prop "$_tp" "libinput Accel Speed" -0.3 2>/dev/null
-fi
-unset _tp
+# Mouse, touchpad and trackpoint: GNOME's settings (speed, acceleration, tap,
+# natural scrolling), re-applied whenever a device is plugged in or wakes up.
+pkill -f "bspwm/input.sh --watch"
+"$HOME/.config/bspwm/input.sh" --watch &
 
 # --- Password keyring ---
 # GDM unlocks gnome-keyring at login, but outside GNOME only its pkcs11 part
