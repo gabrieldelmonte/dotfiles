@@ -59,10 +59,10 @@ if command -v xsecurelock >/dev/null && command -v mpv >/dev/null && [ -f "$vide
     export XSECURELOCK_SINGLE_AUTH_WINDOW=1
     export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0   # first key typed is part of the password
     export XSECURELOCK_AUTH_TIMEOUT=30
-    # Screen off (and video stopped) after 5 minutes locked, to save battery.
-    export XSECURELOCK_BLANK_TIMEOUT=300
-    export XSECURELOCK_BLANK_DPMS_STATE=off
-    export XSECURELOCK_SAVER_STOP_ON_BLANK=1
+    # Never blank while locked: the video keeps playing until you unlock.
+    # (X's own screen saver / DPMS timers are paused below for the same reason.)
+    export XSECURELOCK_BLANK_TIMEOUT=-1
+    keep_screen_on=1
     # Keys that keep working while locked.
     export XSECURELOCK_KEY_XF86AudioRaiseVolume_COMMAND="wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
     export XSECURELOCK_KEY_XF86AudioLowerVolume_COMMAND="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
@@ -85,10 +85,22 @@ dunstctl set-paused true
 # xss-lock --transfer-sleep-lock hands over a file descriptor that the locker
 # closes once the screen is locked, which lets suspend continue. This wrapper
 # must not keep its own copy open, or suspend waits for the timeout.
+# Keep the display on while the video lock is up; restore the timers after.
+if [ -n "${keep_screen_on:-}" ]; then
+    saver=$(xset q | awk '/timeout:/ {print $2, $4; exit}')   # e.g. "600 600"
+    dpms_on=$(xset q | grep -c "DPMS is Enabled")
+    xset s off -dpms
+fi
+
 "${locker[@]}" &
 locker_pid=$!
 [ -n "$XSS_SLEEP_LOCK_FD" ] && eval "exec $XSS_SLEEP_LOCK_FD<&-"
 wait "$locker_pid"
+
+if [ -n "${keep_screen_on:-}" ]; then
+    xset s ${saver:-600 600}
+    [ "${dpms_on:-1}" -gt 0 ] && xset +dpms
+fi
 
 [ "$was_paused" = true ] || dunstctl set-paused false
 pkill -USR1 -f '^bash .*polybar/scripts/notifications\.sh'   # refresh the bell
