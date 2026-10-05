@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# input.sh — apply GNOME's mouse / touchpad / trackpoint settings under bspwm.
+# input.sh — apply GNOME's keyboard, mouse, touchpad and trackpoint settings
+# under bspwm.
 #
 # GNOME's settings daemon does this in a GNOME session; bspwm has none, so
 # devices otherwise run on libinput defaults (fast, with acceleration). The
 # values come from org.gnome.desktop.peripherals.*, i.e. what you set in
-# Settings → Mouse & Touchpad (Super+I): changes apply instantly with --watch.
+# Settings → Keyboard and Mouse & Touchpad (Super+I) — layouts, keyboard options
+# such as Caps Lock behaviour, pointer speed. With --watch, changes apply live.
 #
-#   input.sh          apply to all pointing devices now
+#   input.sh          apply to the keyboard and all pointing devices now
 #   input.sh --watch  keep running and re-apply when a device appears
 #                     (plugging in or waking a mouse resets it to defaults)
 #                     or when the settings change
@@ -32,7 +34,40 @@ set_profile() {
 
 bool() { [ "$1" = true ] && echo 1 || echo 0; }
 
+# Keyboard: layouts from org.gnome.desktop.input-sources "sources" (xkb
+# entries like 'br' or 'us+intl') and its "xkb-options" (e.g.
+# caps:ctrl_modifier = Caps Lock works as Ctrl). With more than one layout,
+# Alt+Shift switches between them.
+apply_keyboard() {
+    local layouts variants options
+    read -r layouts variants < <(python3 - <<'PY'
+import ast, subprocess
+def get(key):
+    out = subprocess.run(["gsettings", "get", "org.gnome.desktop.input-sources", key],
+                         capture_output=True, text=True).stdout.strip()
+    out = out.removeprefix("@a(ss) ").removeprefix("@as ")
+    try:
+        return ast.literal_eval(out)
+    except Exception:
+        return []
+layouts, variants = [], []
+for kind, name in get("sources"):
+    if kind == "xkb":
+        layout, _, variant = name.partition("+")
+        layouts.append(layout); variants.append(variant)
+print(",".join(layouts) or "br", ",".join(variants) or ",")
+PY
+)
+    options=$(gsettings get org.gnome.desktop.input-sources xkb-options 2>/dev/null |
+              sed -E "s/^@as //; s/[][' ]//g")
+    [[ $layouts == *,* ]] && options="${options:+$options,}grp:alt_shift_toggle"
+    [ "$variants" = "," ] && variants=""
+    # -option "" first: clear options left over from before, then set ours.
+    setxkbmap -layout "$layouts" ${variants:+-variant "$variants"} -option "" ${options:+-option "$options"}
+}
+
 apply() {
+    apply_keyboard
     local m_speed m_profile m_natural t_speed t_profile t_tap t_natural t_dwt t_click p_speed p_profile
     m_speed=$(get mouse speed);         m_profile=$(get mouse accel-profile)
     m_natural=$(get mouse natural-scroll)
@@ -73,14 +108,15 @@ apply
 
 if [ "${1:-}" = --watch ]; then
     # Settings changes (e.g. the Mouse & Touchpad sliders) — applied live.
-    for schema in mouse touchpad pointingstick; do
-        gsettings monitor "org.gnome.desktop.peripherals.$schema" 2>/dev/null |
+    for schema in input-sources peripherals.mouse peripherals.touchpad peripherals.pointingstick; do
+        gsettings monitor "org.gnome.desktop.$schema" 2>/dev/null |
         while read -r _; do
             while read -r -t 0.3 _; do :; done   # dragging a slider = many events
             apply
         done &
     done
-    # XI2 hierarchy events fire when devices are added or enabled.
+    # XI2 hierarchy events fire when devices are added or enabled (a newly
+    # plugged keyboard gets the system defaults, so the keyboard is redone too).
     xinput --test-xi2 --root 2>/dev/null | grep --line-buffered -E 'HierarchyChanged' |
     while read -r _; do
         while read -r -t 1 _; do :; done   # one plug = a burst of events
