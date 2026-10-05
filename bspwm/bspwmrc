@@ -63,6 +63,9 @@ bspc rule -r '*'
 bspc rule -a floating-term               state=floating rectangle=900x550+0+0 center=true
 bspc rule -a '*:*:Picture-in-Picture'    state=floating sticky=true
 bspc rule -a Screenkey                   manage=off
+# WhatsApp web app (Firefox web app): Firefox restores it maximized at a saved
+# position, which bspwm otherwise opens as floating.
+bspc rule -a WebApp-WhatsAppWebFirefox1201 state=tiled
 
 # --- Screens, wallpaper, bar (and again on every monitor change) ---
 "$HOME/.config/bspwm/monitors.sh"
