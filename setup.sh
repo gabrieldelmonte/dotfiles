@@ -48,7 +48,7 @@ PACKAGES=(
     # Look & feel
     fonts-noto fonts-noto-color-emoji papirus-icon-theme lxappearance
     # X11 utilities
-    x11-utils x11-xserver-utils xinput xdotool mesa-utils arandr
+    x11-utils x11-xserver-utils xinput xdotool mesa-utils arandr xsettingsd
 )
 
 info "Installing packages..."
