@@ -3,12 +3,13 @@
 #
 # GNOME's settings daemon does this in a GNOME session; bspwm has none, so
 # devices otherwise run on libinput defaults (fast, with acceleration). The
-# values come from org.gnome.desktop.peripherals.*, i.e. what you set in GNOME
-# Settings → Mouse & Touchpad (takes effect at the next login / bspwm reload).
+# values come from org.gnome.desktop.peripherals.*, i.e. what you set in
+# Settings → Mouse & Touchpad (Super+I): changes apply instantly with --watch.
 #
 #   input.sh          apply to all pointing devices now
 #   input.sh --watch  keep running and re-apply when a device appears
 #                     (plugging in or waking a mouse resets it to defaults)
+#                     or when the settings change
 
 get() { gsettings get "org.gnome.desktop.peripherals.$1" "$2" 2>/dev/null | tr -d "'"; }
 
@@ -71,6 +72,14 @@ apply() {
 apply
 
 if [ "${1:-}" = --watch ]; then
+    # Settings changes (e.g. the Mouse & Touchpad sliders) — applied live.
+    for schema in mouse touchpad pointingstick; do
+        gsettings monitor "org.gnome.desktop.peripherals.$schema" 2>/dev/null |
+        while read -r _; do
+            while read -r -t 0.3 _; do :; done   # dragging a slider = many events
+            apply
+        done &
+    done
     # XI2 hierarchy events fire when devices are added or enabled.
     xinput --test-xi2 --root 2>/dev/null | grep --line-buffered -E 'HierarchyChanged' |
     while read -r _; do
