@@ -48,7 +48,7 @@ desktop and tmux binding. The essentials:
 
 | Path | What |
 |---|---|
-| `bspwm/` | WM config, monitor hotplug, brightness, low-battery warnings |
+| `bspwm/` | WM config, monitor hotplug, mouse/touchpad settings (from GNOME's), brightness, low-battery warnings |
 | `sxhkd/sxhkdrc` | Keybindings (`## Section` / `# description` feed the cheat sheet) |
 | `polybar/` | Bar — **generated** by `scripts/gen-polybar.py`, edit that instead |
 | `picom/` `rofi/` `dunst/` | Compositor, menus, notifications |
