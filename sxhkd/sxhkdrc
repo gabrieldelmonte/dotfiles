@@ -41,6 +41,10 @@ super + i
 super + shift + i
     arandr
 
+# Refresh rate of a screen (arandr cannot set it)
+super + shift + r
+    ~/.config/rofi/scripts/refreshrate.py
+
 # Keybinding cheat sheet (this list)
 super + {slash,backslash}
     ~/.config/rofi/scripts/keybinds.py
