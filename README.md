@@ -36,7 +36,7 @@ desktop and tmux binding. The essentials:
 | Super + V | Clipboard history |
 | Super + X | Power menu |
 | Alt + Tab | Switch window |
-| Super + Shift + I | Screen layout (arandr) |
+| Super + Shift + I | Screen layout (arandr); remembered per set of monitors and restored at login and on plug |
 | 3-finger swipe | Switch desktops (up: window list) |
 | Super + 1…9, 0 | Desktops 1–10 |
 | Super + Shift + 1…9, 0 | Move window to desktop 1–10 |
@@ -48,7 +48,7 @@ desktop and tmux binding. The essentials:
 
 | Path | What |
 |---|---|
-| `bspwm/` | WM config, monitor hotplug, mouse/touchpad settings (from GNOME's), brightness, low-battery warnings |
+| `bspwm/` | WM config, monitor hotplug and layouts (desktops 1–0 numbered left to right across screens), mouse/touchpad settings (from GNOME's), brightness, low-battery warnings |
 | `sxhkd/sxhkdrc` | Keybindings (`## Section` / `# description` feed the cheat sheet) |
 | `polybar/` | Bar — **generated** by `scripts/gen-polybar.py`, edit that instead |
 | `picom/` `rofi/` `dunst/` | Compositor, menus, notifications |
