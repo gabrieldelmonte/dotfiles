@@ -37,6 +37,7 @@ desktop and tmux binding. The essentials:
 | Super + X | Power menu |
 | Alt + Tab | Switch window |
 | Super + Shift + I | Screen layout (arandr); remembered per set of monitors and restored at login and on plug |
+| Super + Shift + R | Refresh rate of a screen |
 | 3-finger swipe | Switch desktops (up: window list) |
 | Super + 1…9, 0 | Desktops 1–10 |
 | Super + Shift + 1…9, 0 | Move window to desktop 1–10 |
