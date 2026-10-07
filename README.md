@@ -65,7 +65,7 @@ desktop and tmux binding. The essentials:
 Left: desktops and system stats (CPU usage and temperature, GPU, RAM).
 Centre: clock. Right: keyboard layout, volume, brightness, battery, network,
 Bluetooth, tray, power mode, do-not-disturb bell and power menu. Clicking the
-stats opens btop, the network opens nmtui, the gauge opens the power mode menu.
+stats opens btop, the Wi-Fi icon turns Wi-Fi off and on, the network name opens nmtui, the gauge opens the power mode menu.
 
 ## Lock screen
 
