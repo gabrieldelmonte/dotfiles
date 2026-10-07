@@ -52,14 +52,18 @@ def ws(fg: str, underline: str = "") -> str:
 # a group still closes cleanly when one of its modules is hidden.
 # internal/network has no click-left setting, so clicks are action tags.
 NMTUI = "~/.config/polybar/scripts/network.sh"
+# Wi-Fi icon: turn Wi-Fi off / on; the network name next to it opens nmtui.
+WIFI_TOGGLE = "~/.config/polybar/scripts/wifi-toggle.sh"
 
 
 def on_click(text: str, cmd: str) -> str:
     return f"%{{A1:{cmd}:}}{text}%{{A}}"
 
 
-WLAN_UP = on_click("%{F${colors.teal}}%{T2}<ramp-signal>%{T-}%{F-} <label-connected>", NMTUI)
-WLAN_DOWN = on_click(icon("${colors.overlay1}", G["wifi_off"]) + "<label-disconnected>", NMTUI)
+WLAN_UP = (on_click("%{F${colors.teal}}%{T2}<ramp-signal>%{T-}%{F-}", WIFI_TOGGLE) + " "
+           + on_click("<label-connected>", NMTUI))
+WLAN_DOWN = (on_click(icon("${colors.overlay1}", G["wifi_off"]).rstrip(), WIFI_TOGGLE) + " "
+             + on_click("<label-disconnected>", NMTUI))
 BTOP = "alacritty --class floating-term,floating-term -e btop"
 # System pill: orange CPU (usage + temp), purple GPU (usage + temp), blue RAM.
 CPU = on_click(icon("${colors.peach}", G["cpu"]) + "<label>", BTOP)
@@ -347,7 +351,7 @@ format-padding = 1
 type = custom/script
 exec = ~/.config/polybar/scripts/notifications.sh
 tail = true
-click-left = dunstctl set-paused toggle; pkill -USR1 -f '^bash .*polybar/scripts/notifications\\.sh'
+click-left = dunstctl set-paused toggle; pkill -USR1 -f '^bash .*polybar/scripts/notifications[.]sh'
 format-background = {PILL}
 format-padding = 1
 
