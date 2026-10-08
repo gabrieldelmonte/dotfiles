@@ -40,7 +40,11 @@ bspc config split_ratio           0.52
 bspc config borderless_monocle    true
 bspc config gapless_monocle       false
 bspc config single_monocle        false
-bspc config focus_follows_pointer true
+# Click to focus, like GNOME. With focus following the mouse, keys went to
+# whatever window the pointer rested on (e.g. Ctrl+C after selecting text in
+# another window). Clicking a window focuses it (click_to_focus = button1).
+bspc config focus_follows_pointer false
+bspc config click_to_focus        button1
 bspc config pointer_follows_focus false
 bspc config pointer_modifier      mod4
 bspc config pointer_action1       move
