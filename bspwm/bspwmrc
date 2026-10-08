@@ -37,6 +37,9 @@ bspc query -D --names | grep -qx 10 || bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
 # --- Layout ---
 bspc config split_ratio           0.52
+# New windows split the opposite way from the previous split: A | B, then
+# A | B/C, then A | B/(C|D)… ("longest_side" made A|B|C on the ultrawide).
+bspc config automatic_scheme      alternate
 bspc config borderless_monocle    true
 bspc config gapless_monocle       false
 bspc config single_monocle        false
