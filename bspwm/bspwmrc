@@ -45,7 +45,10 @@ bspc config single_monocle        false
 # another window). Clicking a window focuses it (click_to_focus = button1).
 bspc config focus_follows_pointer false
 bspc config click_to_focus        button1
-bspc config pointer_follows_focus false
+# Mouse warp: when focus moves by keyboard (Super+hjkl, Alt+Tab, Super+N),
+# the pointer jumps to the newly focused window, also across screens.
+bspc config pointer_follows_focus   true
+bspc config pointer_follows_monitor true
 bspc config pointer_modifier      mod4
 bspc config pointer_action1       move
 bspc config pointer_action3       resize_corner
