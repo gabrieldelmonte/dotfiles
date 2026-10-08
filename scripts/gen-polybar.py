@@ -158,20 +158,13 @@ format = "  "
 ; Left
 
 [module/bspwm]
-type = internal/bspwm
-pin-workspaces = true
-; Only desktops with windows are listed; Super+N still reaches all ten.
-label-focused  = "{ws('${colors.blue}')}"
-label-occupied = "{ws('${colors.subtext0}')}"
-label-urgent   = "{ws('${colors.red}')}"
-label-empty    =
-; Shown while the desktop is maximized (monocle, Super+M / Super+Z).
-label-monocle = "{icon('${colors.lavender}', G['max']).strip()}"
-label-tiled =
-label-focused-padding  = 1
-label-occupied-padding = 1
-label-urgent-padding   = 1
-format = <label-state><label-mode>
+; Desktops of this monitor, with the maximized icon right after each desktop
+; in monocle layout (Super+M / Super+Z). Only desktops with windows are
+; listed; Super+N still reaches all ten. Click = go there, scroll = move.
+type = custom/script
+exec = env C_FOCUSED=${{colors.blue}} C_OCCUPIED=${{colors.subtext0}} C_URGENT=${{colors.red}} C_MAX=${{colors.lavender}} MAX_ICON={G['max']} ~/.config/polybar/scripts/desktops.py
+tail = true
+format = <label>
 format-background = {PILL}
 
 ; ============================================================
