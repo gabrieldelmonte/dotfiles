@@ -27,9 +27,19 @@ except ValueError:
     TIMEOUT = 30
 SOCKDIR = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "lockscreen")
 # xsecurelock also starts us on mouse movement. Show the card only once a key
-# is pressed ("Press any key to unlock"); a mouse nudge leaves the video alone.
+# is pressed or a mouse button clicked; moving the mouse leaves the video alone.
 # That first key only wakes the card, like GNOME: it is not part of the password.
+# Clicks come from clicks.py (run by lock.sh while locked), which touches
+# CLICK_FILE on each one; the click that made xsecurelock start us counts too.
 WAKE_WAIT = 10
+CLICK_FILE = os.path.join(SOCKDIR, "last-click")
+
+
+def last_click():
+    try:
+        return os.stat(CLICK_FILE).st_mtime
+    except OSError:
+        return 0.0
 
 
 def log(msg):
@@ -140,11 +150,21 @@ def authenticate(message):
 
 
 def wait_for_key():
-    """True once a key is pressed (and swallowed); False if nothing arrives
-    within WAKE_WAIT seconds or the key was Escape."""
-    ready, _, _ = select.select([0], [], [], WAKE_WAIT)
-    if not ready:
-        return False
+    """True once a key is pressed (and swallowed) or a mouse button clicked;
+    False if neither happens within WAKE_WAIT seconds, or on Escape."""
+    started = time.time()
+    if started - last_click() < 1.5:   # the click that woke xsecurelock
+        return True
+    deadline = time.monotonic() + WAKE_WAIT
+    while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return False
+        ready, _, _ = select.select([0], [], [], min(0.1, remaining))
+        if ready:
+            break
+        if last_click() > started:
+            return True
     ch = os.read(0, 1)
     if not ch or ch[0] == 27:
         return False
