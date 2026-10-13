@@ -26,6 +26,10 @@ try:
 except ValueError:
     TIMEOUT = 30
 SOCKDIR = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "lockscreen")
+# xsecurelock also starts us on mouse movement. Show the card only once a key
+# is pressed ("Press any key to unlock"); a mouse nudge leaves the video alone.
+WAKE_WAIT = 10
+pending = bytearray()   # the key that woke us, counted as typed
 
 
 def log(msg):
@@ -67,7 +71,10 @@ def prompt(message=""):
     """Read one line from the forwarded keys. None = cancelled or timed out."""
     buf = bytearray()
     deadline = time.monotonic() + TIMEOUT
-    ui("active", 0, message)
+    if pending:
+        buf += pending
+        pending.clear()
+    ui("active", len(buf.decode(errors="ignore")), message)
     while True:
         remaining = deadline - time.monotonic()
         if remaining <= 0:
@@ -135,7 +142,23 @@ def authenticate(message):
     return "cancel" if cancelled else "fail"
 
 
+def wait_for_key():
+    """True once a key is pressed (kept in `pending` if printable); False if
+    nothing arrives within WAKE_WAIT seconds or the key was Escape."""
+    ready, _, _ = select.select([0], [], [], WAKE_WAIT)
+    if not ready:
+        return False
+    ch = os.read(0, 1)
+    if not ch or ch[0] == 27:
+        return False
+    if ch[0] >= 32:
+        pending.extend(ch)
+    return True
+
+
 def main():
+    if not wait_for_key():
+        return 1   # woken by the mouse only: stay on the video
     message = ""
     while True:
         result = authenticate(message)
