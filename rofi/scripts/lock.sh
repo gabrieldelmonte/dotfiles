@@ -103,10 +103,20 @@ if [ -n "${keep_screen_on:-}" ]; then
     xset s off -dpms
 fi
 
+# Mouse clicks (not movement) open the unlock card: lockscreen/clicks.py notes
+# each click for auth_card while the screen is locked.
+if [ "${locker[0]}" = xsecurelock ]; then
+    mkdir -p -m 700 "${XDG_RUNTIME_DIR:-/tmp}/lockscreen"
+    ( [ -n "$XSS_SLEEP_LOCK_FD" ] && eval "exec $XSS_SLEEP_LOCK_FD<&-"
+      exec "$dotfiles/lockscreen/clicks.py" "${XDG_RUNTIME_DIR:-/tmp}/lockscreen/last-click" ) 2>/dev/null &
+    clicks_pid=$!
+fi
+
 "${locker[@]}" &
 locker_pid=$!
 [ -n "$XSS_SLEEP_LOCK_FD" ] && eval "exec $XSS_SLEEP_LOCK_FD<&-"
 wait "$locker_pid"
+[ -n "${clicks_pid:-}" ] && kill "$clicks_pid" 2>/dev/null
 
 if [ -n "${keep_screen_on:-}" ]; then
     xset s ${saver:-600 600}
