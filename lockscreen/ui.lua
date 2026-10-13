@@ -7,6 +7,8 @@
 --
 -- auth_card drives it with:  script-message lockui <state> <dots> <message>
 -- states: idle | active | checking | ok
+--         dialog  (xscreensaver build: its own unlock dialog is on top, so
+--                  only blur and dim the video)
 
 local state, dots, message = "idle", 0, ""
 local last_update = mp.get_time()
@@ -89,6 +91,8 @@ local function draw()
         ev[#ev + 1] = text(cx, math.floor(h * 0.34), math.floor(200 * s), WHITE, os.date("%H:%M"), "\\b0")
         ev[#ev + 1] = text(cx, math.floor(h * 0.34 + 135 * s), math.floor(52 * s), WHITE, date, "\\b0")
         ev[#ev + 1] = text(cx, math.floor(h - 50 * s), math.floor(28 * s), WHITE, "Press any key to unlock", "\\alpha&H30&")
+    elseif state == "dialog" then
+        ev[#ev + 1] = shape(string.format("m 0 0 l %d 0 l %d %d l 0 %d", w, w, h, h), BLACK, "&H90&")
     else
         -- Dim layer over the blurred video.
         ev[#ev + 1] = shape(string.format("m 0 0 l %d 0 l %d %d l 0 %d", w, w, h, h), BLACK, "&H90&")
