@@ -28,8 +28,8 @@ except ValueError:
 SOCKDIR = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "lockscreen")
 # xsecurelock also starts us on mouse movement. Show the card only once a key
 # is pressed ("Press any key to unlock"); a mouse nudge leaves the video alone.
+# That first key only wakes the card, like GNOME: it is not part of the password.
 WAKE_WAIT = 10
-pending = bytearray()   # the key that woke us, counted as typed
 
 
 def log(msg):
@@ -71,10 +71,7 @@ def prompt(message=""):
     """Read one line from the forwarded keys. None = cancelled or timed out."""
     buf = bytearray()
     deadline = time.monotonic() + TIMEOUT
-    if pending:
-        buf += pending
-        pending.clear()
-    ui("active", len(buf.decode(errors="ignore")), message)
+    ui("active", 0, message)
     while True:
         remaining = deadline - time.monotonic()
         if remaining <= 0:
@@ -143,16 +140,19 @@ def authenticate(message):
 
 
 def wait_for_key():
-    """True once a key is pressed (kept in `pending` if printable); False if
-    nothing arrives within WAKE_WAIT seconds or the key was Escape."""
+    """True once a key is pressed (and swallowed); False if nothing arrives
+    within WAKE_WAIT seconds or the key was Escape."""
     ready, _, _ = select.select([0], [], [], WAKE_WAIT)
     if not ready:
         return False
     ch = os.read(0, 1)
     if not ch or ch[0] == 27:
         return False
-    if ch[0] >= 32:
-        pending.extend(ch)
+    # A letter like ç or á is 2-4 bytes (UTF-8): swallow the rest of it too.
+    extra = 3 if ch[0] >= 0xF0 else 2 if ch[0] >= 0xE0 else 1 if ch[0] >= 0xC0 else 0
+    for _ in range(extra):
+        if select.select([0], [], [], 0.2)[0]:
+            os.read(0, 1)
     return True
 
 
