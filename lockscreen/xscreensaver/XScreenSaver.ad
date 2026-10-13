@@ -1,0 +1,34 @@
+! xscreensaver unlock dialog — dark Latte (like the xsecurelock card), flat.
+! The logo and the "XScreenSaver" heading are built in and cannot be changed.
+! Loaded with xrdb -merge before locking (see lock-xscreensaver.sh).
+*dialogTheme:                   latte
+*newLoginCommand:
+*passwd.uname:                  False
+*passwd.asterisks:              True
+*dateFormat:                    %A, %d %B  %H:%M
+
+*Dialog.headingFont:            Ubuntu Sans bold 18
+*Dialog.bodyFont:               Ubuntu Sans 14
+*Dialog.errorFont:              Ubuntu Sans bold 14
+*Dialog.labelFont:              Ubuntu Sans 14
+*Dialog.unameFont:              Ubuntu Sans 12
+*Dialog.buttonFont:             Ubuntu Sans bold 14
+*Dialog.dateFont:               Ubuntu Sans 11
+
+*latte.Dialog.foreground:               #eff1f5
+*latte.Dialog.background:               #4c4f69
+*latte.Dialog.button.foreground:        #eff1f5
+*latte.Dialog.button.background:        #1e66f5
+*latte.Dialog.logo.background:          #4c4f69
+*latte.Dialog.text.foreground:          #eff1f5
+*latte.Dialog.text.background:          #5c5f77
+*latte.Dialog.error.foreground:         #f38ba8
+*latte.Dialog.topShadowColor:           #4c4f69
+*latte.Dialog.bottomShadowColor:        #4c4f69
+*latte.Dialog.shadowWidth:              0
+*latte.Dialog.borderColor:              #4c4f69
+*latte.Dialog.borderWidth:              0
+*latte.Dialog.internalPadding:          28
+*latte.Dialog.thermometer.foreground:   #1e66f5
+*latte.Dialog.thermometer.background:   #5c5f77
+*latte.Dialog.thermometer.width:        4
