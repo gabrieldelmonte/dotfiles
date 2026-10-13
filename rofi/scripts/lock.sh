@@ -57,7 +57,7 @@ if command -v xsecurelock >/dev/null && command -v mpv >/dev/null && [ -f "$vide
     export XSECURELOCK_AUTH_FOREGROUND_COLOR="#eff1f5"
     export XSECURELOCK_AUTH_WARNING_COLOR="#f38ba8"   # readable red on dark
     export XSECURELOCK_SINGLE_AUTH_WINDOW=1
-    export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0   # first key typed is part of the password
+    export XSECURELOCK_DISCARD_FIRST_KEYPRESS=0   # auth_card swallows the wake-up key itself
     export XSECURELOCK_AUTH_TIMEOUT=30
     # On the charger: never blank — the video keeps playing until you unlock
     # (X's own screen saver / DPMS timers are paused below for the same reason).
